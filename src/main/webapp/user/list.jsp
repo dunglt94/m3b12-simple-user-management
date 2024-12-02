@@ -12,6 +12,17 @@
     <title>User Management Application</title>
 </head>
 <style>
+    h1, h2 {
+        text-align: center;
+        margin: 8px;
+    }
+
+    div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
     table {
         border-collapse: collapse;
         box-shadow:  0 0 5px 2px rgba(0,0,0,0.3);
@@ -46,8 +57,15 @@
     }
 </style>
 <body>
-    <h1 align="center">User Management</h1>
-    <h2 align="center">
+    <h1>User Management</h1>
+    <div>
+        <form method="get">
+            <input type="hidden" name="action" value="search">
+            <label for="search"><input type="text" name="country" id="search"></label>
+            <input type="submit" value="Search">
+        </form>
+    </div>
+    <h2>
         <a href="/users?action=create">Add New User</a>
     </h2>
 <div align="center">

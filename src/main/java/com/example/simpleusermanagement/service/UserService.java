@@ -33,4 +33,9 @@ public class UserService implements IUserService {
     public void remove(int id) throws SQLException {
         userDAO.deleteUser(id);
     }
+
+    @Override
+    public List<User> findByCountry(String country) throws SQLException {
+        return userDAO.findByCountry(country);
+    }
 }

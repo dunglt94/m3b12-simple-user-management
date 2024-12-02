@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "UserServlet", urlPatterns = "/users")
@@ -99,6 +100,8 @@ public class UserServlet extends HttpServlet {
                 case "delete":
                     deleteUser(req, resp);
                     break;
+                case "search":
+                    searchUser(req, resp);
                 default:
                     listUser(req, resp);
                     break;
@@ -152,6 +155,19 @@ public class UserServlet extends HttpServlet {
         List<User> listUser = userService.findAll();
         req.setAttribute("listUser", listUser);
         RequestDispatcher dispatcher = req.getRequestDispatcher("user/list.jsp");
+        try {
+            dispatcher.forward(req, resp);
+        } catch (ServletException | IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void searchUser(HttpServletRequest req, HttpServletResponse resp)
+            throws SQLException, IOException, ServletException {
+        String country = req.getParameter("country");
+        List<User> searchedUser = userService.findByCountry(country);
+        req.setAttribute("searchedUser", searchedUser);
+        RequestDispatcher dispatcher = req.getRequestDispatcher("user/search.jsp");
         try {
             dispatcher.forward(req, resp);
         } catch (ServletException | IOException e) {
