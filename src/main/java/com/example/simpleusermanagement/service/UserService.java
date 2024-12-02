@@ -38,4 +38,9 @@ public class UserService implements IUserService {
     public List<User> findByCountry(String country) throws SQLException {
         return userDAO.findByCountry(country);
     }
+
+    @Override
+    public List<User> sortByName() {
+        return userDAO.sortByName();
+    }
 }

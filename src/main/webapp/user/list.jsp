@@ -30,12 +30,13 @@
 
     th {
         padding: 10px;
+        border: 1px solid black;
     }
 
     td {
-        border-bottom: 1px solid black;
+        border: 1px solid black;
         padding: 10px;
-        text-align: left;
+        text-align: center;
     }
 
     img {
@@ -66,14 +67,26 @@
         </form>
     </div>
     <h2>
-        <a href="/users?action=create">Add New User</a>
+        <a href="${pageContext.request.contextPath}/users?action=create">Add New User</a>
     </h2>
-<div align="center">
-    <table border="1" cellpadding="5">
+
+<div>
+
+</div>
+<div>
+    <table>
         <caption><h2>List of Users</h2></caption>
+        <caption style="text-align: left">
+            <form method="get">
+                <input type="hidden" name="action" value="sort-by-name">
+                <input type="submit" value="Sort by name">
+            </form>
+        </caption>
         <tr>
             <th>ID</th>
-            <th>Name</th>
+            <th>
+                Name
+            </th>
             <th>Email</th>
             <th>Country</th>
             <th>Actions</th>
@@ -81,13 +94,15 @@
         <c:forEach var="user" items="${listUser}">
             <tr>
                 <td><c:out value="${user.id}"/></td>
-                <td><c:out value="${user.name}"/></td>
+                <td>
+                    <c:out value="${user.name}"/>
+                </td>
                 <td><c:out value="${user.email}"/></td>
                 <td><c:out value="${user.country}"/></td>
                 <td>
-                    <a href="/users?action=edit&id=${user.id}">Edit</a>
+                    <a href="${pageContext.request.contextPath}/users?action=edit&id=${user.id}">Edit</a>
                     <span>|</span>
-                    <a href="/users?action=delete&id=${user.id}">Delete</a>
+                    <a href="${pageContext.request.contextPath}/users?action=delete&id=${user.id}">Delete</a>
                 </td>
             </tr>
         </c:forEach>

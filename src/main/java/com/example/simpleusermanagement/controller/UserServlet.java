@@ -77,6 +77,18 @@ public class UserServlet extends HttpServlet {
         }
     }
 
+    private void sortByName(HttpServletRequest req, HttpServletResponse resp)
+            throws SQLException, IOException, ServletException {
+        List<User> users = userService.sortByName();
+        req.setAttribute("listUser", users);
+        RequestDispatcher dispatcher = req.getRequestDispatcher("user/list.jsp");
+        try {
+            dispatcher.forward(req, resp);
+        } catch (ServletException | IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // Thiết lập encoding cho request
@@ -102,6 +114,10 @@ public class UserServlet extends HttpServlet {
                     break;
                 case "search":
                     searchUser(req, resp);
+                    break;
+                case "sort-by-name":
+                    sortByName(req, resp);
+                    break;
                 default:
                     listUser(req, resp);
                     break;

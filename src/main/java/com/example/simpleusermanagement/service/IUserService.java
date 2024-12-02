@@ -17,4 +17,6 @@ public interface IUserService {
     void remove(int id) throws SQLException;
 
     List<User> findByCountry(String country) throws SQLException;
+
+    List<User> sortByName();
 }
