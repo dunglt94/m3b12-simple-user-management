@@ -23,6 +23,14 @@
         justify-content: center;
     }
 
+    #sort-buttons {
+        text-align: left;
+    }
+
+    #sort-buttons form {
+        display: inline-block;
+    }
+
     table {
         border-collapse: collapse;
         box-shadow:  0 0 5px 2px rgba(0,0,0,0.3);
@@ -76,16 +84,15 @@
 <div>
     <table>
         <caption><h2>List of Users</h2></caption>
-        <caption style="text-align: left">
+        <caption id="sort-buttons">
             <form method="get">
                 <input type="hidden" name="action" value="sort-by-name">
                 <input type="submit" value="Sort by name">
             </form>
-            <form method="get">
+            <form action="/users" method="post">
                 <input type="hidden" name="action" value="">
                 <input type="submit" value="reset">
             </form>
-
         </caption>
         <tr>
             <th>ID</th>

@@ -39,6 +39,7 @@ public class UserServlet extends HttpServlet {
                     updateUser(req, resp);
                     break;
                 default:
+                    listUser(req, resp);
             }
         } catch (SQLException ex) {
             throw new ServletException(ex);
@@ -120,7 +121,6 @@ public class UserServlet extends HttpServlet {
                     break;
                 default:
                     listUser(req, resp);
-                    break;
             }
         } catch (SQLException ex) {
             throw new ServletException(ex);
@@ -183,6 +183,7 @@ public class UserServlet extends HttpServlet {
         String country = req.getParameter("country");
         List<User> searchedUser = userService.findByCountry(country);
         req.setAttribute("searchedUser", searchedUser);
+        req.setAttribute("message", "No user in " + country + " found");
         RequestDispatcher dispatcher = req.getRequestDispatcher("user/search.jsp");
         try {
             dispatcher.forward(req, resp);

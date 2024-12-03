@@ -14,6 +14,7 @@
 <style>
   h1, h2 {
     text-align: center;
+    margin: 10px 0;
   }
 
   div {
@@ -56,6 +57,12 @@
   <a href="/users">Back to list</a>
 </h2>
 <div>
+  <c:if test='${empty searchedUser}'>
+    <h3>${message}</h3>
+  </c:if>
+</div>
+<div>
+<c:if test='${!empty searchedUser}'>
   <table>
     <caption><h2>Searched Users</h2></caption>
     <tr>
@@ -79,6 +86,7 @@
       </tr>
     </c:forEach>
   </table>
+</c:if>
 </div>
 </body>
 </html>
