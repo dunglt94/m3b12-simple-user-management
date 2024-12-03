@@ -57,6 +57,13 @@
   <a href="/users">Back to list</a>
 </h2>
 <div>
+  <form method="get">
+    <input type="hidden" name="action" value="search">
+    <label for="search"><input type="text" name="country" id="search"></label>
+    <input type="submit" value="Search">
+  </form>
+</div>
+<div>
   <c:if test='${empty searchedUser}'>
     <h3>${message}</h3>
   </c:if>

@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO implements IUserDAO {
-    private String jdbcURL = "jdbc:mysql://localhost:3306/demousermanagement?useSSL=false";
-    private String jdbcUsername = "root";
-    private String jdbcPassword = "123456";
+    private final String jdbcURL = "jdbc:mysql://localhost:3306/demousermanagement";
+    private final String jdbcUsername = "root";
+    private final String jdbcPassword = "123456";
 
     private static final String INSERT_USERS_SQL = "INSERT INTO users (name, email, country) VALUES (?, ?, ?);";
     private static final String SELECT_USER_BY_ID = "select id,name,email,country from users where id =?";
@@ -115,16 +115,15 @@ public class UserDAO implements IUserDAO {
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_COUNTRY)) {
             System.out.println(preparedStatement);
             preparedStatement.setString(1, country);
-            addUsersToList(users, preparedStatement);
+            ResultSet rs = preparedStatement.executeQuery();
+            addUsersToList(users, rs);
         } catch (SQLException e) {
             printSQLException(e);
         }
         return users;
     }
 
-    private void addUsersToList(List<User> users, PreparedStatement preparedStatement) throws SQLException {
-        ResultSet rs = preparedStatement.executeQuery();
-
+    private void addUsersToList(List<User> users, ResultSet rs) throws SQLException {
         while (rs.next()) {
             int id = rs.getInt("id");
             String name = rs.getString("name");
@@ -145,11 +144,50 @@ public class UserDAO implements IUserDAO {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             System.out.println(preparedStatement);
-            addUsersToList(users, preparedStatement);
+            ResultSet rs = preparedStatement.executeQuery();
+            addUsersToList(users, rs);
         } catch (SQLException e) {
             printSQLException(e);
         }
         return users;
+    }
+
+    @Override
+    public User getUserByIdSP(int id) {
+        User user = null;
+        String query = "{CALL get_user_by_id(?)}";
+
+        try (Connection connection = getConnection();
+             CallableStatement callableStatement = connection.prepareCall(query)) {
+            callableStatement.setInt(1, id);
+            ResultSet rs = callableStatement.executeQuery();
+
+            while (rs.next()) {
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                String country = rs.getString("country");
+                user = new User(id, name, email, country);
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return user;
+    }
+
+    @Override
+    public void insertUserSP(User user) throws SQLException {
+        String query = "{CALL insert_user(?,?,?)}";
+
+        try (Connection connection = getConnection();
+             CallableStatement callableStatement = connection.prepareCall(query);) {
+            callableStatement.setString(1, user.getName());
+            callableStatement.setString(2, user.getEmail());
+            callableStatement.setString(3, user.getCountry());
+            System.out.println(callableStatement);
+            callableStatement.executeUpdate();
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
     }
 
     private void printSQLException(SQLException ex) {

@@ -43,4 +43,14 @@ public class UserService implements IUserService {
     public List<User> sortByName() {
         return userDAO.sortByName();
     }
+
+    @Override
+    public User getUserByIdSP(int id) {
+        return userDAO.getUserByIdSP(id);
+    }
+
+    @Override
+    public void insertUserSP(User user) throws SQLException {
+        userDAO.insertUserSP(user);
+    }
 }
