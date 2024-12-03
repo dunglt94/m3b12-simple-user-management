@@ -38,7 +38,7 @@ public class UserDAO implements IUserDAO {
     private Connection getConnection() {
         Connection connection = null;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
 //            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
             connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
         } catch (SQLException | ClassNotFoundException e) {
@@ -109,7 +109,8 @@ public class UserDAO implements IUserDAO {
     @Override
     public boolean updateUser(User user) throws SQLException {
         boolean rowUpdated = false;
-        try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(UPDATE_USERS_SQL)) {
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_USERS_SQL)) {
             statement.setString(1, user.getName());
             statement.setString(2, user.getEmail());
             statement.setString(3, user.getCountry());
@@ -361,6 +362,52 @@ public class UserDAO implements IUserDAO {
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
+        }
+    }
+
+    @Override
+    public List<User> selectAllSP() {
+        List<User> users = new ArrayList<>();
+        String query = "call show_all_user()";
+        try (Connection conn = getConnection();
+             CallableStatement callableStatement = conn.prepareCall(query);
+            ResultSet rs = callableStatement.executeQuery()) {
+            System.out.println(callableStatement);
+            addUsersToList(users, rs);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return users;
+    }
+
+    @Override
+    public void deleteUserSP(int id) throws SQLException {
+        String query = "call delete_user(?)";
+        try (Connection conn = getConnection();
+            CallableStatement callableStatement = conn.prepareCall(query)) {
+            callableStatement.setInt(1, id);
+            System.out.println(callableStatement);
+            callableStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            //noinspection CallToPrintStackTrace
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateUserSP(User user) throws SQLException {
+        String query = "call edit_user(?,?,?,?)";
+        try (Connection conn = getConnection();
+            CallableStatement callableStatement = conn.prepareCall(query)) {
+            callableStatement.setInt(1, user.getId());
+            callableStatement.setString(2, user.getName());
+            callableStatement.setString(3, user.getEmail());
+            callableStatement.setString(4, user.getCountry());
+            System.out.println(callableStatement);
+            callableStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
     }
 

@@ -11,7 +11,8 @@ public class UserService implements IUserService {
     private final IUserDAO userDAO = new UserDAO();
     @Override
     public List<User> findAll() {
-        return userDAO.selectAllUsers();
+//        return userDAO.selectAllUsers();
+        return userDAO.selectAllSP();
     }
 
     @Override
@@ -26,12 +27,14 @@ public class UserService implements IUserService {
 
     @Override
     public void update(User user) throws SQLException {
-        userDAO.updateUser(user);
+//        userDAO.updateUser(user);
+        userDAO.updateUserSP(user);
     }
 
     @Override
     public void remove(int id) throws SQLException {
-        userDAO.deleteUser(id);
+//        userDAO.deleteUser(id);
+        userDAO.deleteUserSP(id);
     }
 
     @Override
