@@ -304,6 +304,66 @@ public class UserDAO implements IUserDAO {
         }
     }
 
+    @Override
+    public void insertUpdateUseTransaction() {
+        Connection conn = null;
+        Statement statement = null;
+        PreparedStatement psInsert = null;
+        PreparedStatement psUpdate = null;
+        try {
+            conn = getConnection();
+            conn.setAutoCommit(false); // default true
+            statement = conn.createStatement();
+            psInsert = conn.prepareStatement(SQL_INSERT);
+            psUpdate = conn.prepareStatement(SQL_UPDATE);
+            statement.execute(SQL_TABLE_DROP);
+            statement.execute(SQL_TABLE_CREATE);
+
+            psInsert.setString(1, "Quynh");
+            psInsert.setBigDecimal(2, new BigDecimal(10));
+            psInsert.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+            psInsert.execute();
+
+            psInsert.setString(1, "Ngan");
+            psInsert.setBigDecimal(2, new BigDecimal(20));
+            psInsert.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+            psInsert.execute();
+
+            // Run list of update commands
+            // below line caused error, test transaction
+            // org.postgresql.util.PSQLException: No value specified for parameter 1.
+//            psUpdate.setBigDecimal(2, new BigDecimal(999.99));
+            psUpdate.setBigDecimal(1, new BigDecimal(999.99));
+            psUpdate.setString(2, "Quynh");
+            psUpdate.execute();
+            // end transaction block, commit changes
+            conn.commit();
+            // good practice to set it back to default true
+            conn.setAutoCommit(true);
+
+        } catch (SQLException ex) {
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+            System.out.println(ex.getMessage());
+            //noinspection CallToPrintStackTrace
+            ex.printStackTrace();
+        }  finally {
+            try {
+                if (statement != null) statement.close();
+                if (psInsert != null) psInsert.close();
+                if (psUpdate != null) psUpdate.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
     private void printSQLException(SQLException ex) {
         for (Throwable e : ex) {
             if (e instanceof SQLException) {

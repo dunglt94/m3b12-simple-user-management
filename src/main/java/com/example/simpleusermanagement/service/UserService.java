@@ -63,4 +63,9 @@ public class UserService implements IUserService {
     public void insertUpdateWithoutTransaction() {
         userDAO.insertUpdateWithoutTransaction();
     }
+
+    @Override
+    public void insertUpdateUseTransaction() {
+        userDAO.insertUpdateUseTransaction();
+    }
 }

@@ -143,6 +143,9 @@ public class UserServlet extends HttpServlet {
                 case "test-without-tran":
                     testWithoutTran(req, resp);
                     break;
+                case "test-use-tran":
+                    testUseTran(req, resp);
+                    break;
                 default:
                     listUser(req, resp);
             }
@@ -216,6 +219,10 @@ public class UserServlet extends HttpServlet {
         } catch (ServletException | IOException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private void testUseTran(HttpServletRequest request, HttpServletResponse response) {
+        userService.insertUpdateUseTransaction();
     }
 
     private void testWithoutTran(HttpServletRequest req, HttpServletResponse resp) {
