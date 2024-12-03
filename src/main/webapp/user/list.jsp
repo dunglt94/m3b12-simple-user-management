@@ -81,6 +81,11 @@
                 <input type="hidden" name="action" value="sort-by-name">
                 <input type="submit" value="Sort by name">
             </form>
+            <form method="get">
+                <input type="hidden" name="action" value="">
+                <input type="submit" value="reset">
+            </form>
+
         </caption>
         <tr>
             <th>ID</th>

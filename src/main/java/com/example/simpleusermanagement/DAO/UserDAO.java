@@ -113,21 +113,26 @@ public class UserDAO implements IUserDAO {
         List<User> users = new ArrayList<>();
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_COUNTRY)) {
-            preparedStatement.setString(1, country);
             System.out.println(preparedStatement);
-            ResultSet rs = preparedStatement.executeQuery();
-
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                String email = rs.getString("email");
-
-                users.add(new User(id, name, email, country));
-            }
+            preparedStatement.setString(1, country);
+            addUsersToList(users, preparedStatement);
         } catch (SQLException e) {
             printSQLException(e);
         }
         return users;
+    }
+
+    private void addUsersToList(List<User> users, PreparedStatement preparedStatement) throws SQLException {
+        ResultSet rs = preparedStatement.executeQuery();
+
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            String name = rs.getString("name");
+            String email = rs.getString("email");
+            String country = rs.getString("country");
+
+            users.add(new User(id, name, email, country));
+        }
     }
 
     @Override
@@ -135,20 +140,12 @@ public class UserDAO implements IUserDAO {
         return getUsers(SORT_BY_COUNTRY);
     }
 
-    private List<User> getUsers(String sortByCountry) {
+    private List<User> getUsers(String query) {
         List<User> users = new ArrayList<>();
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sortByCountry)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             System.out.println(preparedStatement);
-            ResultSet rs = preparedStatement.executeQuery();
-
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                String email = rs.getString("email");
-                String country = rs.getString("country");
-                users.add(new User(id, name, email, country));
-            }
+            addUsersToList(users, preparedStatement);
         } catch (SQLException e) {
             printSQLException(e);
         }
