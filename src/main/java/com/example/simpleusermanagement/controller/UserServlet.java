@@ -140,6 +140,9 @@ public class UserServlet extends HttpServlet {
                 case "sort-by-name":
                     sortByName(req, resp);
                     break;
+                case "test-without-tran":
+                    testWithoutTran(req, resp);
+                    break;
                 default:
                     listUser(req, resp);
             }
@@ -213,5 +216,9 @@ public class UserServlet extends HttpServlet {
         } catch (ServletException | IOException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private void testWithoutTran(HttpServletRequest req, HttpServletResponse resp) {
+        userService.insertUpdateWithoutTransaction();
     }
 }

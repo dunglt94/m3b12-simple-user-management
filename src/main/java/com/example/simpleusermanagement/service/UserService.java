@@ -58,4 +58,9 @@ public class UserService implements IUserService {
     public void addUserTransaction(User user, List<Integer> permission) {
         userDAO.addUserTransaction(user, permission);
     }
+
+    @Override
+    public void insertUpdateWithoutTransaction() {
+        userDAO.insertUpdateWithoutTransaction();
+    }
 }

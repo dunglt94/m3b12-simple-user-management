@@ -25,4 +25,6 @@ public interface IUserService {
     void insertUserSP(User user) throws SQLException;
 
     void addUserTransaction(User user, List<Integer> permission);
+
+    public void insertUpdateWithoutTransaction();
 }
