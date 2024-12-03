@@ -51,10 +51,29 @@ public class UserServlet extends HttpServlet {
         String name = req.getParameter("name");
         String email = req.getParameter("email");
         String country = req.getParameter("country");
+
+        String add = req.getParameter("add");
+        String edit = req.getParameter("edit");
+        String delete = req.getParameter("delete");
+        String view = req.getParameter("view");
+        List<Integer> permissions = new ArrayList<>();
+        if (add != null){
+            permissions.add(1);
+        }
+        if (edit != null){
+            permissions.add(2);
+        }
+        if (delete != null){
+            permissions.add(3);
+        }
+        if (view != null){
+            permissions.add(4);
+        }
+
         User newUser = new User(name, email, country);
 //        userService.create(newUser);
-        userService.insertUserSP(newUser);
-
+//        userService.insertUserSP(newUser);
+        userService.addUserTransaction(newUser, permissions);
         RequestDispatcher dispatcher = req.getRequestDispatcher("user/create.jsp");
         try {
             dispatcher.forward(req, resp);

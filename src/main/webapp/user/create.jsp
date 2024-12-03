@@ -53,7 +53,7 @@
 <body>
 <h1>User Management</h1>
 <h2>
-    <a href="users?action=users">List All Users</a>
+    <a href="users">List All Users</a>
 </h2>
 <div>
     <form method="post">
@@ -77,6 +77,15 @@
                 <th>Country:</th>
                 <td>
                     <input type="text" name="country" id="country" size="15"/>
+                </td>
+            </tr>
+            <tr>
+                <th>Permission:</th>
+                <td>
+                    <input type="checkbox" name="add" size="15"/> add |
+                    <input type="checkbox" name="edit" size="15"/> edit |
+                    <input type="checkbox" name="delete" size="15"/> delete |
+                    <input type="checkbox" name="view" size="15"/> view
                 </td>
             </tr>
             <tr>

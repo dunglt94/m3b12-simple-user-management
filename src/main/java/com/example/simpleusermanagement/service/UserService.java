@@ -53,4 +53,9 @@ public class UserService implements IUserService {
     public void insertUserSP(User user) throws SQLException {
         userDAO.insertUserSP(user);
     }
+
+    @Override
+    public void addUserTransaction(User user, List<Integer> permission) {
+        userDAO.addUserTransaction(user, permission);
+    }
 }

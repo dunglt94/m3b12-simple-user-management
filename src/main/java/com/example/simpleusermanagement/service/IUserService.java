@@ -23,4 +23,6 @@ public interface IUserService {
     User getUserByIdSP(int id);
 
     void insertUserSP(User user) throws SQLException;
+
+    void addUserTransaction(User user, List<Integer> permission);
 }
